@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Define the source file
+FILE="users.txt"
+
+# Read the file line by line
+while IFS=',' read -r name email id
+do
+    # Check if email and id are not empty
+    if [[ -z "$email" || -z "$id" ]]; then
+        echo "Warning: Invalid parameters for user $name"
+        continue
+    fi
+
+    # Check if the email is a FQDN
+    if [[ "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+        # Check if the id is odd or even
+        if (( id % 2 == 0 )); then
+            echo "The ID of $email is an even number."
+        else
+            echo "The ID of $email is an odd number."
+        fi
+    else
+        echo "Warning: Invalid email address for user $name"
+    fi
+done < "$FILE"
